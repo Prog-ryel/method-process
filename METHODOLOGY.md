@@ -1,92 +1,173 @@
-# Methodology/Process
+# BMI Calculator System
+---
 
-## BMI Calculator System
+## 1. Project Title and Introduction
+
+### Project Title
+
+**BMI Calculator System**
+
+A web-based health tracking application that computes Body Mass Index (BMI), classifies results using WHO standards, stores personal health records, and visualizes progress through a secure user dashboard.
+
+### Introduction
+
+Many people track BMI using paper notes or spreadsheets. This is slow, easy to lose, and hard to analyze over time. The **BMI Calculator System** solves this by providing a **secure online platform** where users can:
+
+- Create a personal account
+- Calculate BMI instantly
+- Receive category-based health tips
+- Save and review past measurements
+- View trends on a dashboard with charts
+
+### Problem Statement
+
+Manual BMI tracking is error-prone, difficult to search, and does not show health trends over time. Users need a **centralized, secure web application** to calculate BMI, store history per account, and monitor progress with statistics and charts.
+
+### Target Users
+
+- Students and individuals monitoring personal health
+- Users who want a simple digital BMI log with visual progress
+- Anyone learning web development concepts (authentication, CRUD, REST API, database)
+
+### System Type
+
+- **Web application** (browser-based)
+- **Architecture:** Three-tier (Frontend → Flask API → MySQL)
+- **Deployment:** Localhost via XAMPP + Python Flask (`start_server.bat`)
 
 ---
 
-## 1. Project Overview
+## 2. Objectives of the System
 
-### 1.1 Problem Statement
+### General Objective
 
-Manual BMI tracking (paper notes, spreadsheets) is error-prone, hard to search, and does not show trends over time. Users need a secure web application to calculate BMI, store history per account, and view progress through charts and statistics.
+To design and develop a **web-based BMI Calculator System** that allows users to compute BMI accurately, store measurement history, and monitor health progress through an interactive dashboard.
 
-### 1.2 Objectives
+### Specific Objectives
 
+| # | Objective | How the system achieves it |
+| - | --------- | --------------------------- |
+| 1 | Provide accurate BMI computation | Server-side formula: `BMI = weight (kg) ÷ (height in m)²` (height entered in cm) |
+| 2 | Classify BMI automatically | WHO categories: Underweight, Normal, Overweight, Obese |
+| 3 | Give personalized health guidance | Health tips generated per category after each calculation |
+| 4 | Enable secure user access | Registration, login, password hashing, Flask session authentication |
+| 5 | Store and manage BMI history | MySQL database with CRUD: view, edit, delete, search, pagination |
+| 6 | Visualize health progress | Dashboard with statistics, line chart (BMI trend), pie chart (categories) |
+| 7 | Support user profile data | Age and gender captured during registration |
+| 8 | Ensure data quality and safety | Form validation, input limits, parameterized SQL, per-user data isolation |
 
-| Objective                    | How the system addresses it                                  |
-| ---------------------------- | ------------------------------------------------------------ |
-| Accurate BMI computation     | Server-side formula: BMI = weight (kg) ÷ (height in m)²      |
-| Personalized health guidance | Category-based tips (Underweight, Normal, Overweight, Obese) |
-| Long-term monitoring         | Persistent records in MySQL with dashboard trends            |
-| Secure access                | Registration, hashed passwords, session-based authentication |
-| Usable interface             | Responsive HTML/Tailwind UI with real-time API feedback      |
+### Scope
 
-
-### 1.3 Scope
-
-**In scope:** User registration/login, BMI calculator, record history (view, edit, delete, search, pagination), dashboard statistics, chart visualization, CSV export, form validation, dark mode (client-side preference).
+**Included:** Registration/login, BMI calculator, history management, dashboard analytics, CSV export, responsive UI, validation and error handling.
 
 ---
 
-## 2. Research & Development Methodology
+## 3. System Features and Functionalities
 
-### 2.1 Approach: Modified Waterfall with Iterative Refinement
+### 3.1 Features Implemented (Summary)
 
-The project follows a **structured SDLC (Software Development Life Cycle)** suitable for academic capstone work, with short feedback loops during implementation and testing.
+- User registration & login
+- Real-time BMI calculation
+- Automatic BMI category detection (Underweight, Normal, Overweight, Obese)
+- Personalized health tips based on BMI
+- View BMI history with pagination
+- Dashboard with statistics & BMI trends
+- Age & gender input support
+- Form validation & error handling
 
+### 3.2 Features by Module
 
-| Phase                    | Activities                                   | Deliverables                     |
-| ------------------------ | -------------------------------------------- | -------------------------------- |
-| **1. Planning**          | Define problem, objectives, scope, tools     | Project proposal, feature list   |
-| **2. Requirements**      | Gather functional & non-functional needs     | Requirements specification       |
-| **3. Analysis & Design** | ERD, architecture, UI wireframes, API design | Database schema, system diagrams |
-| **4. Implementation**    | Backend API, frontend pages, database setup  | Working prototype → full system  |
-| **5. Testing**           | Unit checks, integration, user acceptance    | Test cases, bug fixes            |
-| **6. Deployment**        | XAMPP + Flask server, documentation          | Deployed system, user guide      |
+#### A. Authentication Module
 
+| Feature | Functionality |
+| ------- | ------------- |
+| Register | User signs up with full name, email, password, age, gender |
+| Login | Email/password validation; session created on success |
+| Logout | Session cleared; user returned to login |
+| Profile check | Protected pages verify login via `/api/profile` |
 
-**Why this approach:** Requirements (BMI formula, categories, user accounts) are well-defined early. The team can implement backend logic and database first, then connect the frontend via REST APIs—a clear order that matches the actual codebase (`backend/app.py`, `frontend/`, `backend/database.sql`).
+#### B. BMI Calculator Module
 
-### 2.2 Requirements Gathering Methods
+| Feature | Functionality |
+| ------- | ------------- |
+| Input height & weight | Height in cm, weight in kg |
+| Real-time calculation | API computes BMI before or on save |
+| Category detection | Underweight / Normal / Overweight / Obese |
+| Health tips | Tip text based on category |
+| Save record | Each calculation stored in `bmi_records` table |
+| Validation | Rejects empty, negative, or unrealistic values |
 
-- **Document analysis** — WHO BMI classification standards
-- **Comparative study** — Review of existing online BMI calculators
-- **Developer-driven specification** — Feature list aligned with course objectives (authentication, CRUD, charts, validation)
+#### C. Dashboard Module
 
-### 2.3 BMI Classification Standard (WHO)
+| Feature | Functionality |
+| ------- | ------------- |
+| Statistics cards | Total records, latest BMI, average BMI, normal count |
+| Recent records | Last 5 BMI entries |
+| Line chart | BMI trend over time (Chart.js) |
+| Pie chart | Distribution by category |
+| Quick actions | Links to Calculator and History |
 
-The system uses internationally recognized adult BMI ranges:
+#### D. History Module
 
+| Feature | Functionality |
+| ------- | ------------- |
+| View all records | Paginated list (10 per page) |
+| Search | Filter by category or health tip keyword |
+| Filter | Filter by BMI category |
+| Edit record | Update height/weight; BMI recalculated |
+| Delete record | Remove entry (user-owned only) |
+| Export CSV | Download full history as `bmi_history.csv` |
 
-| BMI Range   | Category    | System behavior                                 |
-| ----------- | ----------- | ----------------------------------------------- |
-| < 18.5      | Underweight | Stores category + underweight health tip        |
-| 18.5 – 24.9 | Normal      | Stores category + maintenance tip               |
-| 25.0 – 29.9 | Overweight  | Stores category + activity/diet tip             |
-| ≥ 30.0      | Obese       | Stores category + professional consultation tip |
+#### E. User Interface
 
+| Feature | Functionality |
+| ------- | ------------- |
+| Landing page | Project overview and feature highlights |
+| Responsive design | Tailwind CSS — desktop, tablet, mobile |
+| Icons | Font Awesome for navigation and cards |
+| Session UI | User name on dashboard; redirect if not logged in |
 
-**Formula implemented in backend:**
+### 3.3 BMI Classification (WHO Standard)
+
+| BMI Range | Category | System output |
+| --------- | -------- | ------------- |
+| Below 18.5 | Underweight | Category + weight-gain guidance tip |
+| 18.5 – 24.9 | Normal | Category + maintenance tip |
+| 25.0 – 29.9 | Overweight | Category + diet/activity tip |
+| 30.0 and above | Obese | Category + professional consultation tip |
+
+**Formula:**
 
 ```
 height_m = height_cm / 100
 BMI = weight_kg / (height_m)²
-Result rounded to 2 decimal places
+(Result rounded to 2 decimal places)
 ```
 
 ---
 
-## 3. System Development Process (Step-by-Step)
+## 4. Methodology/Process
 
-### Phase 1: Planning & Requirements
+### 4.1 Development Approach
 
-1. Identify target users (individuals tracking personal health).
-2. List core features: auth, calculator, history, dashboard, export.
-3. Select stack: **Python Flask** (API + server), **MySQL** (data), **HTML/CSS/JS** (UI), **Tailwind CSS** (styling), **Chart.js** (graphs).
+The project uses a **Modified Waterfall with Iterative Refinement** — a structured **Software Development Life Cycle (SDLC)** suitable for academic projects, with testing and fixes during implementation.
 
-### Phase 2: System Analysis & Design
+| Phase | Activities | Output |
+| ----- | ---------- | ------ |
+| 1. Planning | Problem definition, objectives, scope, tool selection | Project plan, feature list |
+| 2. Requirements | Functional & non-functional requirements | Requirements list |
+| 3. Analysis & Design | ERD, architecture, API design, UI pages | `database.sql`, system diagrams |
+| 4. Implementation | Backend, frontend, database integration | Working system |
+| 5. Testing | Functional, validation, integration, security tests | Verified features |
+| 6. Deployment | XAMPP, MySQL import, Flask server | Runnable application |
 
-#### 2.1 System Architecture (Three-Tier)
+**Requirements gathering:**
+
+- Document analysis (WHO BMI standards)
+- Comparative study (existing online BMI tools)
+- Feature alignment with course requirements (auth, CRUD, charts)
+
+### 4.2 System Architecture (Three-Tier)
 
 ```
 ┌─────────────────────────────────────────────────────────────┐
@@ -98,99 +179,48 @@ Result rounded to 2 decimal places
                            ▼
 ┌─────────────────────────────────────────────────────────────┐
 │                    APPLICATION LAYER                        │
-│  Flask (app.py): routes, validation, BMI logic, sessions,   │
-│  CORS, login_required / api_login_required decorators       │
+│  Flask (app.py): routes, validation, BMI logic, sessions    │
 └──────────────────────────┬──────────────────────────────────┘
                            │ SQL (Flask-MySQLdb)
                            ▼
 ┌─────────────────────────────────────────────────────────────┐
 │                      DATA LAYER                             │
-│  MySQL: bmi_calculator_system                               │
-│  Tables: users, bmi_records (FK user_id ON DELETE CASCADE)  │
+│  MySQL: bmi_calculator_system                             │
+│  Tables: users, bmi_records                                 │
 └─────────────────────────────────────────────────────────────┘
 ```
 
-#### 2.2 Database Design
+### 4.3 Database Design
 
-- `**users**` — Account data (fullname, email, hashed password, age, gender).
-- `**bmi_records**` — Per-user measurements (height, weight, bmi, category, health_tip, timestamp).
-- **Indexes** on `user_id`, `email`, `created_at` for faster queries.
+| Table | Purpose | Key fields |
+| ----- | ------- | ---------- |
+| `users` | User accounts | fullname, email, password (hashed), age, gender |
+| `bmi_records` | BMI measurements | user_id, height, weight, bmi, category, health_tip, created_at |
 
-#### 2.3 API Design Pattern
+Relationship: One user → many BMI records (`ON DELETE CASCADE`).
 
-REST-style JSON endpoints under `/api/*`, with Flask server sessions for authentication (`credentials: 'include'` on the client).
+### 4.4 Implementation Process
 
+**Backend (Python/Flask):**
 
-| Endpoint               | Method   | Purpose                           |
-| ---------------------- | -------- | --------------------------------- |
-| `/api/register`        | POST     | Create account                    |
-| `/api/login`           | POST     | Authenticate, start session       |
-| `/api/logout`          | POST     | End session                       |
-| `/api/profile`         | GET      | Verify session / load user        |
-| `/api/calculator`      | POST     | Calculate BMI and save record     |
-| `/api/calculate-bmi`   | POST     | Calculate only (no save)          |
-| `/api/history`         | GET      | Paginated history + search/filter |
-| `/api/edit/<id>`       | GET/POST | View or update record             |
-| `/api/delete/<id>`     | DELETE   | Remove record                     |
-| `/api/export`          | GET      | Download CSV                      |
-| `/api/dashboard-stats` | GET      | Stats + recent records            |
-| `/api/chart-data`      | GET      | Line & pie chart data             |
+1. Create database schema (`backend/database.sql`)
+2. Build helper functions: `calculate_bmi()`, `get_bmi_category()`, `get_health_tip()`
+3. Implement authentication (register, login, hashed passwords)
+4. Create REST API endpoints under `/api/*`
+5. Add dashboard stats and chart data APIs
 
+**Frontend (HTML/JavaScript):**
 
-### Phase 3: Implementation
+1. Design pages with Tailwind CSS
+2. Connect API via `frontend/js/api.js` (Fetch API)
+3. Manage session via `frontend/js/session.js`
+4. Integrate Chart.js on dashboard
 
-#### 3.1 Backend Development Order
+### 4.5 System Process Flows
 
-1. Database schema (`database.sql`) — create DB and tables.
-2. Helper functions — `calculate_bmi()`, `get_bmi_category()`, `get_health_tip()`, `get_user_stats()`.
-3. Authentication — register, login, password hashing (`werkzeug.security`).
-4. Protected routes — `@api_login_required` for JSON APIs.
-5. BMI CRUD — insert on calculate, history, edit, delete, export.
-6. Analytics — dashboard stats and chart data aggregation.
+> View rendered charts in `methodology-viewer.html` (Diagrams tab).
 
-#### 3.2 Frontend Development Order
-
-1. Static pages and shared styling (`css/app.css`, Tailwind).
-2. API client (`js/api.js`) — dynamic base URL (Flask port 5000 vs XAMPP port 80).
-3. Session manager (`js/session.js`) — localStorage + server profile verification.
-4. Page-specific scripts — dashboard charts, calculator, history table.
-
-#### 3.3 Security Measures Implemented
-
-
-| Concern                      | Implementation                                         |
-| ---------------------------- | ------------------------------------------------------ |
-| Password storage             | `generate_password_hash` / `check_password_hash`       |
-| Session hijacking mitigation | HttpOnly session cookie, server-side `user_id`         |
-| Unauthorized API access      | `api_login_required` returns 401 JSON                  |
-| Data isolation               | All queries filter by `session['user_id']`             |
-| Input validation             | Positive height/weight, realistic max (300 cm, 500 kg) |
-| SQL injection                | Parameterized queries (`%s` placeholders)              |
-
-
-### Phase 4: Testing Methodology
-
-
-| Test type       | What was verified                                                                        |
-| --------------- | ---------------------------------------------------------------------------------------- |
-| **Functional**  | Register, login, logout, BMI calculation, save, edit, delete, search, pagination, export |
-| **Validation**  | Empty fields, short password, duplicate email, invalid height/weight                     |
-| **Integration** | Frontend Fetch calls ↔ Flask API ↔ MySQL                                                 |
-| **Security**    | Access protected pages without login → redirect / 401                                    |
-| **Usability**   | Responsive layout, error messages, dashboard charts load                                 |
-
-
-### Phase 5: Deployment Process
-
-1. Install **XAMPP** — start Apache (optional, for static frontend) and **MySQL**.
-2. Import `**backend/database.sql`** via phpMyAdmin or MySQL CLI.
-3. Create Python virtual environment and install dependencies (`backend/requirements.txt`).
-4. Run `**start_server.bat`** — starts Flask on `http://127.0.0.1:5000`.
-5. Open frontend via Flask (`/`) or XAMPP path; API calls target port 5000 when needed.
-
----
-
-### 4.1 End-to-End User Journey
+#### 4.5.1 End-to-End User Journey
 
 ```mermaid
 flowchart LR
@@ -206,9 +236,7 @@ flowchart LR
     H --> I[Edit / Delete / Export]
 ```
 
-
-
-### 4.2 User Registration Process
+#### 4.5.2 User Registration Process
 
 ```mermaid
 sequenceDiagram
@@ -234,9 +262,7 @@ sequenceDiagram
     end
 ```
 
-
-
-### 4.3 BMI Calculation & Save Process
+#### 4.5.3 BMI Calculation & Save Process
 
 ```mermaid
 sequenceDiagram
@@ -257,63 +283,101 @@ sequenceDiagram
     Website-->>User: Display BMI result and confirmation
 ```
 
+#### 4.5.4 History Management
 
+| Action | User step | System process |
+| ------ | --------- | -------------- |
+| View | Open History | Paginated table (10 per page) |
+| Search | Type keyword | Filters category or health tip |
+| Filter | Select category | Shows matching records only |
+| Edit | Update height/weight | BMI recalculated and saved |
+| Delete | Confirm delete | Record removed from database |
+| Export | Click Export | CSV file download |
 
-### 4.4 Dashboard Data Process
+### 4.6 Testing Methodology
 
-1. User opens **Dashboard** → `verifyAuth()` calls `/api/profile`.
-2. Page loads `**/api/dashboard-stats`** — total records, latest BMI, average BMI, category counts, 5 recent entries.
-3. Page loads `**/api/chart-data`** — last 30 records for line chart (BMI over time) and pie chart (category distribution).
-4. User navigates to Calculator or History from quick actions.
+| Test type | What was tested |
+| --------- | --------------- |
+| Functional | Register, login, calculate, save, edit, delete, export |
+| Validation | Empty fields, short password, duplicate email, invalid inputs |
+| Integration | Frontend ↔ Flask API ↔ MySQL |
+| Security | Protected routes without login → redirect / 401 |
+| Usability | Responsive layout, charts, error messages |
 
-### 4.5 History Management Process
+### 4.7 Deployment Process
 
-
-| Action     | User step         | System process                                                             |
-| ---------- | ----------------- | -------------------------------------------------------------------------- |
-| **View**   | Open History page | GET `/api/history?page=&search=&category=` → paginated table (10 per page) |
-| **Search** | Type keyword      | Filters category or health_tip (LIKE query)                                |
-| **Filter** | Select category   | Adds `category =` condition                                                |
-| **Edit**   | Open edit page    | GET record → POST updated height/weight → recalculate BMI & update row     |
-| **Delete** | Confirm delete    | DELETE `/api/delete/<id>` — only if `user_id` matches                      |
-| **Export** | Click Export      | GET `/api/export` → CSV download                                           |
-
-
----
-
-## 5. Technology Stack & Justification
-
-
-| Layer           | Technology                             | Justification                                                      |
-| --------------- | -------------------------------------- | ------------------------------------------------------------------ |
-| Backend         | Python 3, Flask 3                      | Lightweight, fast to develop REST APIs, good for academic projects |
-| Database        | MySQL (XAMPP)                          | Relational data, familiar tooling, foreign keys for user records   |
-| Frontend        | HTML5, Tailwind CSS                    | No build step required; responsive utility classes                 |
-| Client logic    | Vanilla JavaScript, Fetch API          | Simple async calls, session cookies with `credentials: 'include'`  |
-| Charts          | Chart.js                               | Clear BMI trend and category visualization                         |
-| Security        | Werkzeug hashing, Flask sessions       | Industry-standard password handling                                |
-| Dev environment | XAMPP, Python venv, `start_server.bat` | Matches local school/lab deployment                                |
-
+1. Start **XAMPP** (Apache + MySQL)
+2. Import **`backend/database.sql`** in phpMyAdmin
+3. Install Python packages (`backend/requirements.txt`)
+4. Run **`start_server.bat`** (Flask on port 5000)
+5. Open: `http://localhost/BMI%20SYSTEM/frontend/index.html` or Flask root URL
 
 ---
 
-## 6. Data Flow Summary
+## 5. Demonstration Overview
 
-```
-User Input (height, weight)
-        ↓
-Frontend validation (client-side)
-        ↓
-POST /api/calculator (JSON + session)
-        ↓
-Flask: validate → calculate_bmi() → get_bmi_category() → get_health_tip()
-        ↓
-INSERT bmi_records (user_id from session)
-        ↓
-JSON response → UI update
-        ↓
-Dashboard / History / Charts read from same tables
-```
+Use this section as your **live demo script** during the presentation.
+
+### 5.1 Before the Demo (Setup Checklist)
+
+| Step | Action |
+| ---- | ------ |
+| 1 | Start XAMPP — MySQL running |
+| 2 | Run `start_server.bat` — Flask API on `http://127.0.0.1:5000` |
+| 3 | Open browser to landing page (`frontend/index.html` or Flask `/`) |
+| 4 | Prepare a test account (or register live during demo) |
+
+### 5.2 Demo Flow (Recommended Order)
+
+| Step | Page | What to show | What to explain |
+| ---- | ---- | ------------ | --------------- |
+| 1 | **Landing Page** (`index.html`) | Hero, features, BMI categories | Introduce the system purpose and main capabilities |
+| 2 | **Register** (`register.html`) | Fill name, email, password, age, gender → Submit | User account creation; validation (password length, duplicate email) |
+| 3 | **Login** (`login.html`) | Login with registered account | Secure authentication; session starts |
+| 4 | **Dashboard** (`dashboard.html`) | Stats cards, charts, recent records | Overview of user health data and trends |
+| 5 | **Calculator** (`calculator.html`) | Enter height (cm) and weight (kg) → Calculate | Real-time BMI, category, and health tip; record saved to database |
+| 6 | **Dashboard** (again) | Refresh — new record appears | Data updates after each calculation |
+| 7 | **History** (`history.html`) | List of records, search, filter | Pagination and record management |
+| 8 | **Edit** (`edit.html`) | Change height or weight → Save | BMI recalculated automatically |
+| 9 | **History** | Delete one record | CRUD delete with confirmation |
+| 10 | **History** | Click **Export CSV** | Data export for reporting/backup |
+| 11 | **Logout** | Sign out | Session security |
+
+**Estimated demo time:** 5–8 minutes
+
+### 5.3 Sample Demo Data (Optional)
+
+| Field | Sample value |
+| ----- | ------------ |
+| Full name | Ryel Maghanoy |
+| Email | ryel@example.com |
+| Password | ryel123 |
+| Age | 20 |
+| Gender | male |
+| Height | 170 cm |
+| Weight | 65 kg |
+| Expected BMI | ~22.49 (Normal) |
+
+### 5.4 Key Points to Emphasize During Demo
+
+1. **Accuracy** — BMI computed on server using standard formula
+2. **Security** — Login required for calculator and history; passwords hashed
+3. **Usability** — Clean UI, responsive layout, clear feedback messages
+4. **Data persistence** — Records saved in MySQL and shown on dashboard
+5. **Analytics** — Charts help users see progress over time
+
+---
+
+## 6. Technology Stack
+
+| Layer | Technologies |
+| ----- | ------------ |
+| **Backend** | Python, Flask, MySQL |
+| **Frontend** | HTML5, Tailwind CSS, Font Awesome icons |
+| **JavaScript** | Fetch API, session management (`api.js`, `session.js`) |
+| **Charts** | Chart.js |
+| **Security** | Werkzeug password hashing, Flask sessions |
+| **Environment** | XAMPP, Python virtual environment, `start_server.bat` |
 
 ---
 
@@ -321,20 +385,19 @@ Dashboard / History / Charts read from same tables
 
 **Limitations**
 
-- BMI is a screening tool, not a diagnostic; it does not account for muscle mass, age-specific pediatric ranges, or ethnicity-specific adjustments.
-- Health tips are general guidance, not medical advice.
-- System runs on localhost; production would require HTTPS, strong `secret_key`, and environment-based DB credentials.
+- BMI is a screening tool, not a medical diagnosis
+- Does not account for muscle mass or pediatric BMI charts
+- Health tips are general guidance only
+- Production deployment would need HTTPS and stronger security config
 
 **Ethical use**
 
-- Users should consult healthcare professionals for clinical decisions.
-- Personal data is stored per account; users should use strong passwords and log out on shared devices.
+- Consult healthcare professionals for medical decisions
+- Use strong passwords; log out on shared computers
 
 ---
 
----
-
-## Appendix A: File Structure Reference
+## Appendix A: File Structure
 
 ```
 BMI SYSTEM/
@@ -351,27 +414,6 @@ BMI SYSTEM/
 │   ├── js/api.js           # API client
 │   └── js/session.js       # Auth & UI helpers
 ├── start_server.bat        # Run Flask API
+├── methodology-viewer.html # Markdown preview & diagram export
 └── METHODOLOGY.md          # This document
 ```
-
----
-
-## Appendix B: Features Implemented
-
-- User registration & login
-- Real-time BMI calculation
-- Automatic BMI category detection (Underweight, Normal, Overweight, Obese)
-- Personalized health tips based on BMI
-- View BMI history with pagination
-- Dashboard with statistics & BMI trends
-- Age & Gender input support
-- Form validation & error handling
-
----
-
-## Appendix C: Technology Stack
-
-- **Backend:** Python/Flask, MySQL
-- **Frontend:** HTML5, Tailwind CSS, Font Awesome icons
-- **JavaScript:** Fetch API for async requests, Session management
-- **Styling:** Tailwind CSS
